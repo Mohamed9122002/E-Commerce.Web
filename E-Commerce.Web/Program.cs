@@ -33,8 +33,8 @@ namespace E_Commerce.Web
             // Allowed Dependency Injection Manual  
             var scope = app.Services.CreateScope();
             // Get the Service Provider
-           var objectDataSeeding =  scope.ServiceProvider.GetRequiredService<IDataSeeding>();
-          await  objectDataSeeding.DataSeedAsync();
+            var objectDataSeeding = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
+            await objectDataSeeding.DataSeedAsync();
 
 
             #region Configure the HTTP request pipeline.
