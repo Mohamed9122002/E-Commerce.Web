@@ -1,5 +1,7 @@
 
+using DomainLayer.Contracts;
 using Microsoft.EntityFrameworkCore;
+using Persistence;
 using Persistence.Data.DbContexts;
 
 namespace E_Commerce.Web
@@ -17,15 +19,21 @@ namespace E_Commerce.Web
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
 
-            // Add services to the container.
-            // 
             builder.Services.AddDbContext<StoreDbContext>(Options =>
             {
                 Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
-
+            builder.Services.AddScoped<IDataSeeding, DataSeeding>();
             #endregion
             var app = builder.Build();
+            // get Container Services  
+            // Allowed Dependency Injection Manual  
+            var scope = app.Services.CreateScope();
+            // Get the Service Provider
+           var objectDataSeeding =  scope.ServiceProvider.GetRequiredService<IDataSeeding>();
+            objectDataSeeding.DataSeed();
+
+
             #region Configure the HTTP request pipeline.
 
             // Configure the HTTP request pipeline.
