@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Persistence.Data.DbContexts;
 using Persistence.Repositories;
+using ServiceImplemention.MappingProfiles;
 using System.Threading.Tasks;
 
 namespace E_Commerce.Web
@@ -27,14 +28,19 @@ namespace E_Commerce.Web
             });
             builder.Services.AddScoped<IDataSeeding, DataSeeding>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            // Add AutoMapper
+            builder.Services.AddAutoMapper(typeof(ProductProfile).Assembly);
+            //builder.Services.AddAutoMapper(X => X.AddProfile(new ProductProfile()));
+
             #endregion
             var app = builder.Build();
             // get Container Services  
             // Allowed Dependency Injection Manual  
             var scope = app.Services.CreateScope();
             // Get the Service Provider
-            var objectDataSeeding = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
-            await objectDataSeeding.DataSeedAsync();
+           var objectDataSeeding =  scope.ServiceProvider.GetRequiredService<IDataSeeding>();
+          await  objectDataSeeding.DataSeedAsync();
 
 
             #region Configure the HTTP request pipeline.
