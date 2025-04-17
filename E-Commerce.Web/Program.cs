@@ -3,12 +3,13 @@ using DomainLayer.Contracts;
 using Microsoft.EntityFrameworkCore;
 using Persistence;
 using Persistence.Data.DbContexts;
+using System.Threading.Tasks;
 
 namespace E_Commerce.Web
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -31,7 +32,7 @@ namespace E_Commerce.Web
             var scope = app.Services.CreateScope();
             // Get the Service Provider
            var objectDataSeeding =  scope.ServiceProvider.GetRequiredService<IDataSeeding>();
-            objectDataSeeding.DataSeed();
+          await  objectDataSeeding.DataSeedAsync();
 
 
             #region Configure the HTTP request pipeline.
@@ -45,7 +46,6 @@ namespace E_Commerce.Web
             app.UseHttpsRedirection();
             app.UseAuthorization();
             app.MapControllers();
-
             #endregion
             app.Run();
         }
