@@ -35,8 +35,11 @@ namespace ServiceImplemention.Specifications
                 default:
                     break;
 
-
+                    
             }
+
+
+            ApplyPagination( queryParams.PageSize,  queryParams.PageIndex );
         }
         // Get By Id 
         public ProductWithBrandAndTypeSpecification(int id) : base(p => p.Id == id)
