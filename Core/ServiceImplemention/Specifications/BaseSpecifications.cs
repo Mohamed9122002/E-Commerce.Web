@@ -16,6 +16,7 @@ namespace ServiceImplemention.Specifications
             Criteria = criteria;
         }
         public Expression<Func<TEntity, bool>> Criteria { get; private set; }
+        #region Includes
 
         public List<Expression<Func<TEntity, object>>> ExpressionIncludes { get; } = [];
 
@@ -24,6 +25,23 @@ namespace ServiceImplemention.Specifications
         {
             ExpressionIncludes.Add(includeExpression);
         }
-          
+        #endregion
+        #region Sorting
+        public Expression<Func<TEntity, object>> OrderBy { get; private set; }
+
+        public Expression<Func<TEntity, object>> OrderyByDescending { get; private set; }
+        // Add OrderBy
+        public void AddOrderBy(Expression<Func<TEntity, object>> orderByExpression)
+        {
+            OrderBy = orderByExpression;
+        }
+        // Add OrderyByDescending
+        public void AddOrderyByDescending(Expression<Func<TEntity, object>> orderyByDescendingExpression)
+        {
+            OrderyByDescending = orderyByDescendingExpression;
+        }
+        #endregion
+
+
     }
 }
