@@ -3,6 +3,7 @@ using DomainLayer.Contracts;
 using DomainLayer.Models;
 using ServiceAbstraction;
 using ServiceImplemention.Specifications;
+using Shared;
 using Shared.DataTransferObject;
 using Shared.Eums;
 using System;
@@ -25,10 +26,10 @@ namespace ServiceImplemention
 
         }
 
-        public async Task<IEnumerable<ProductDtos>> GetAllProductsAsync(int? BrandId,int? TypeId ,ProductSortingOptions productSortingOptions )
+        public async Task<IEnumerable<ProductDtos>> GetAllProductsAsync(ProductQueryParams queryParams )
         {
             // Create Object ProductWihtBarndAndTypeSpecificaion 
-            var Specifications = new ProductWithBrandAndTypeSpecification (BrandId , TypeId, productSortingOptions);
+            var Specifications = new ProductWithBrandAndTypeSpecification (queryParams);
 
             var Products = await _unitOfWork.GetRepository<Product, int>().GetAllAsync(Specifications);
             // Convert Data(Product) to DTO

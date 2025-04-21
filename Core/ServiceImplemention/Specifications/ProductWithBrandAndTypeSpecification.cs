@@ -1,4 +1,5 @@
 ﻿using DomainLayer.Models;
+using Shared;
 using Shared.Eums;
 using System;
 using System.Collections.Generic;
@@ -11,13 +12,13 @@ namespace ServiceImplemention.Specifications
     public class ProductWithBrandAndTypeSpecification : BaseSpecifications<Product, int>
     {
         // Get All Products With Brand and Type
-        public ProductWithBrandAndTypeSpecification(int? BrandId, int? TypeId, ProductSortingOptions productSortingOptions) :
-            base(P => (!BrandId.HasValue || P.BrandId == BrandId) && (!TypeId.HasValue || P.TypeId == TypeId))
+        public ProductWithBrandAndTypeSpecification(ProductQueryParams queryParams) :
+            base(P => (!queryParams.BrandId.HasValue || P.BrandId == queryParams.BrandId) && (!queryParams.TypeId.HasValue || P.TypeId == queryParams.TypeId))
         // P=> P.BrandId
         {
             AddInclude(p => p.ProductBrand);
             AddInclude(p => p.ProductType);
-            switch (productSortingOptions)
+            switch (queryParams.SortingOptions)
             {
                 case ProductSortingOptions.NameAsc:
                     AddOrderBy(p => p.Name);
