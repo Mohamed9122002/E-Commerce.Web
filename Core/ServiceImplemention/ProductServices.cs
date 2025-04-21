@@ -2,6 +2,7 @@
 using DomainLayer.Contracts;
 using DomainLayer.Models;
 using ServiceAbstraction;
+using ServiceImplemention.Specifications;
 using Shared.DataTransferObject;
 using System;
 using System.Collections.Generic;
@@ -15,7 +16,6 @@ namespace ServiceImplemention
     {
         public async Task<IEnumerable<BrandDto>> GetAllBrandsAsync()
         {
-            // ازاي اتعامل هنا مع المودل  
             var Repo = _unitOfWork.GetRepository<ProductBrand, int>();
             var Brands = await Repo.GetAllAsync();
             // Convert Data(ProductBrand) to DTO
@@ -26,7 +26,10 @@ namespace ServiceImplemention
 
         public async Task<IEnumerable<ProductDtos>> GetAllProductsAsync()
         {
-            var Products = await _unitOfWork.GetRepository<Product, int>().GetAllAsync();
+            // Create Object ProductWihtBarndAndTypeSpecificaion 
+            var Specifications = new ProductWithBrandAndTypeSpecification ();
+
+            var Products = await _unitOfWork.GetRepository<Product, int>().GetAllAsync(Specifications);
             // Convert Data(Product) to DTO
             return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDtos>>(Products);
 
@@ -41,8 +44,9 @@ namespace ServiceImplemention
 
         public async Task<ProductDtos> GetProductByIdAsync(int id)
         {
+            var Specifications = new ProductWithBrandAndTypeSpecification(id);
             // Get Product By Id 
-            var Product = await _unitOfWork.GetRepository<Product, int>().GetByIdAsync(id);
+            var Product = await _unitOfWork.GetRepository<Product, int>().GetByIdAsync(Specifications);
             // Convert Data(Product) to DTO
             return _mapper.Map<Product, ProductDtos>(Product);
         }

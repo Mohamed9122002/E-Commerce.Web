@@ -10,11 +10,11 @@ namespace DomainLayer.Contracts
 {
     public interface ISpecifications<TEntity ,Tkey> where TEntity : BaseEntity<Tkey>
     {
-
         // Property Signature For Each Dynamic Part int Query 
         public Expression<Func<TEntity,bool>> Criteria { get; }
 
         List<Expression<Func<TEntity, object>>> ExpressionIncludes { get; }
+
 
     }
 }
