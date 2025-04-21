@@ -24,10 +24,10 @@ namespace ServiceImplemention
 
         }
 
-        public async Task<IEnumerable<ProductDtos>> GetAllProductsAsync()
+        public async Task<IEnumerable<ProductDtos>> GetAllProductsAsync(int? BrandId,int? TypeId )
         {
             // Create Object ProductWihtBarndAndTypeSpecificaion 
-            var Specifications = new ProductWithBrandAndTypeSpecification ();
+            var Specifications = new ProductWithBrandAndTypeSpecification (BrandId , TypeId);
 
             var Products = await _unitOfWork.GetRepository<Product, int>().GetAllAsync(Specifications);
             // Convert Data(Product) to DTO
