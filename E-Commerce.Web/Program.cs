@@ -1,14 +1,20 @@
 
 using DomainLayer.Contracts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Persistence;
 using Persistence.Data.DbContexts;
+using Persistence.Repositories;
+using ServiceAbstraction;
+using ServiceImplemention;
+using ServiceImplemention.MappingProfiles;
+using System.Threading.Tasks;
 
 namespace E_Commerce.Web
 {
     public class Program
     {
-        public static void Main(string[] args)
+        public static async Task Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
@@ -24,6 +30,13 @@ namespace E_Commerce.Web
                 Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
             builder.Services.AddScoped<IDataSeeding, DataSeeding>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+
+            // Add AutoMapper
+            builder.Services.AddAutoMapper(typeof(ProductProfile).Assembly);
+            //builder.Services.AddAutoMapper(X => X.AddProfile(new ProductProfile()));
+            builder.Services.AddScoped<IServiceManager , ServiceManager>();
+
             #endregion
             var app = builder.Build();
             // get Container Services  
@@ -31,7 +44,7 @@ namespace E_Commerce.Web
             var scope = app.Services.CreateScope();
             // Get the Service Provider
            var objectDataSeeding =  scope.ServiceProvider.GetRequiredService<IDataSeeding>();
-            objectDataSeeding.DataSeed();
+          await  objectDataSeeding.DataSeedAsync();
 
 
             #region Configure the HTTP request pipeline.
@@ -43,9 +56,9 @@ namespace E_Commerce.Web
                 app.UseSwaggerUI();
             }
             app.UseHttpsRedirection();
-            app.UseAuthorization();
+            app.UseStaticFiles();
+            //app.UseAuthorization();
             app.MapControllers();
-
             #endregion
             app.Run();
         }
