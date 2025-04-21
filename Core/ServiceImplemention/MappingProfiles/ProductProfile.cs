@@ -9,13 +9,14 @@ using System.Threading.Tasks;
 
 namespace ServiceImplemention.MappingProfiles
 {
-  public  class ProductProfile : Profile
+  public class ProductProfile : Profile
     {
         public ProductProfile()
         {
-            CreateMap<Product,ProductDtos>()
+            CreateMap<Product, ProductDtos>()
                 .ForMember(dest => dest.BarndName, options => options.MapFrom(src => src.ProductBrand.Name))
-                .ForMember(dest => dest.TypeName, options => options.MapFrom(src => src.ProductType.Name));
+                .ForMember(dest => dest.TypeName, options => options.MapFrom(src => src.ProductType.Name))
+                .ForMember(dest => dest.PictureUrl, options => options.MapFrom<PictureUrResolver>());
             CreateMap<ProductType, TypeDto>();
             CreateMap<ProductBrand, BrandDto>();
         }

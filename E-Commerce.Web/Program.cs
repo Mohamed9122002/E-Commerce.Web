@@ -56,7 +56,8 @@ namespace E_Commerce.Web
                 app.UseSwaggerUI();
             }
             app.UseHttpsRedirection();
-            app.UseAuthorization();
+            app.UseStaticFiles();
+            //app.UseAuthorization();
             app.MapControllers();
             #endregion
             app.Run();
