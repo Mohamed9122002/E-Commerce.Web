@@ -21,7 +21,7 @@ namespace Persistence
             {
                 Query = Query.Where(specifications.Criteria);
             }
-            // Order By
+            // Order By 
             if (specifications.OrderBy != null)
             {
                 Query = Query.OrderBy(specifications.OrderBy);
