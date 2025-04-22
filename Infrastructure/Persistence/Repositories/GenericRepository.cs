@@ -51,5 +51,10 @@ namespace Persistence.Repositories
 
             _dbContext.Set<TEntity>().Update(entity);
         }
+
+        public async Task<int> CountAsync(ISpecifications<TEntity, TKey> specifications)
+        {
+          return   await  SpecificationEvaluator.CreateQuery(_dbContext.Set<TEntity>(), specifications).CountAsync();
+        }
     }
 }

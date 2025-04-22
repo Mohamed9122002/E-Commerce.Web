@@ -28,13 +28,16 @@ namespace ServiceImplemention
 
         public async Task<PaginatedResult<ProductDtos>> GetAllProductsAsync(ProductQueryParams queryParams)
         {
+            var Repo = _unitOfWork.GetRepository<Product, int>();
+
             // Create Object ProductWihtBarndAndTypeSpecificaion 
             var Specifications = new ProductWithBrandAndTypeSpecification(queryParams);
 
-            var Products = await _unitOfWork.GetRepository<Product, int>().GetAllAsync(Specifications);
+            var Products = await Repo.GetAllAsync(Specifications);
             // Convert Data(Product) to DTO
             var Data = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDtos>>(Products);
             var ProductCount = Products.Count();
+            var TotalCount = await Repo.CountAsync(new ProductCountSpecification(queryParams));
             return new PaginatedResult<ProductDtos>(queryParams.PageIndex, ProductCount, 0, Data);
 
         }
