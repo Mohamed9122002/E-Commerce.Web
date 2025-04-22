@@ -13,6 +13,11 @@ namespace DomainLayer.Contracts
         Task<IEnumerable<TEntity>> GetAllAsync();
         // GetById
         Task<TEntity?> GetByIdAsync(Tkey id);
+        #region With Specifications
+        Task<TEntity?> GetByIdAsync(ISpecifications<TEntity, Tkey> specifications);
+        Task<IEnumerable<TEntity>> GetAllAsync(ISpecifications<TEntity, Tkey> specifications);
+        Task<int> CountAsync(ISpecifications<TEntity, Tkey> specifications);
+        #endregion
         // Add 
         Task AddAsync(TEntity entity);
         // Update not version Async 
