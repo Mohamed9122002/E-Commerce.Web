@@ -14,34 +14,36 @@ using System.Threading.Tasks;
 
 namespace ServiceImplemention
 {
-    public class ProductServices(IUnitOfWork _unitOfWork, IMapper _mapper ) : IProductServices
+    public class ProductServices(IUnitOfWork _unitOfWork, IMapper _mapper) : IProductServices
     {
         public async Task<IEnumerable<BrandDto>> GetAllBrandsAsync()
         {
             var Repo = _unitOfWork.GetRepository<ProductBrand, int>();
             var Brands = await Repo.GetAllAsync();
             // Convert Data(ProductBrand) to DTO
-            var brandsDto = _mapper.Map<IEnumerable<ProductBrand>,IEnumerable<BrandDto>>(Brands);
+            var brandsDto = _mapper.Map<IEnumerable<ProductBrand>, IEnumerable<BrandDto>>(Brands);
             return brandsDto;
 
         }
 
-        public async Task<IEnumerable<ProductDtos>> GetAllProductsAsync(ProductQueryParams queryParams )
+        public async Task<PaginatedResult<ProductDtos>> GetAllProductsAsync(ProductQueryParams queryParams)
         {
             // Create Object ProductWihtBarndAndTypeSpecificaion 
-            var Specifications = new ProductWithBrandAndTypeSpecification (queryParams);
+            var Specifications = new ProductWithBrandAndTypeSpecification(queryParams);
 
             var Products = await _unitOfWork.GetRepository<Product, int>().GetAllAsync(Specifications);
             // Convert Data(Product) to DTO
-            return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDtos>>(Products);
+            var Data = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDtos>>(Products);
+            var ProductCount = Products.Count();
+            return new PaginatedResult<ProductDtos>(queryParams.PageIndex, ProductCount, 0, Data);
 
         }
 
         public async Task<IEnumerable<TypeDto>> GetAllTypesAsync()
         {
-            var Types =  await _unitOfWork.GetRepository<ProductType, int>().GetAllAsync();
+            var Types = await _unitOfWork.GetRepository<ProductType, int>().GetAllAsync();
             // Convert Data(ProductType) to DTO
-          return _mapper.Map<IEnumerable<ProductType>, IEnumerable<TypeDto>>(Types);
+            return _mapper.Map<IEnumerable<ProductType>, IEnumerable<TypeDto>>(Types);
         }
 
         public async Task<ProductDtos> GetProductByIdAsync(int id)
