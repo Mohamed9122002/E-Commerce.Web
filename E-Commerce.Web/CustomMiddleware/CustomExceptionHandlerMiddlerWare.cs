@@ -1,4 +1,5 @@
-﻿using Shared.ErrorModels;
+﻿using DomainLayer.Exceptions;
+using Shared.ErrorModels;
 using System.Net;
 using System.Text.Json;
 
@@ -13,19 +14,23 @@ namespace E_Commerce.Web.CustomeMiddleware
             {
                 await _next.Invoke(httpContext);
             }
-            catch (Exception ex)
+            catch (Exception ex )
             {
                 _logger.LogError(ex, "Something Went Wrong");
                 // Change
                 // Set status code For Respoense 
                 //httpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-                httpContext.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                httpContext.Response.StatusCode = ex switch
+                {
+                    NotFoundException => StatusCodes.Status404NotFound,
+                    _=> StatusCodes.Status500InternalServerError
+                };
                 // Set Content Type For Resposnse
                 httpContext.Response.ContentType = "application/json";
                 // Response Object
                 var Response = new ErrorToReturn()
                 {
-                    StatusCode = StatusCodes.Status500InternalServerError,
+                    StatusCode = httpContext.Response.StatusCode,
                     ErrorMessage = ex.Message
                 };
                 // Return Object As Json 
