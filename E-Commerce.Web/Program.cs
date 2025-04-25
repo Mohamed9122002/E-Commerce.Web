@@ -1,5 +1,6 @@
 
 using DomainLayer.Contracts;
+using E_Commerce.Web.CustomeMiddleware;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Persistence;
@@ -35,7 +36,7 @@ namespace E_Commerce.Web
             // Add AutoMapper
             builder.Services.AddAutoMapper(typeof(ProductProfile).Assembly);
             //builder.Services.AddAutoMapper(X => X.AddProfile(new ProductProfile()));
-            builder.Services.AddScoped<IServiceManager , ServiceManager>();
+            builder.Services.AddScoped<IServiceManager, ServiceManager>();
 
             #endregion
             var app = builder.Build();
@@ -43,13 +44,21 @@ namespace E_Commerce.Web
             // Allowed Dependency Injection Manual  
             var scope = app.Services.CreateScope();
             // Get the Service Provider
-           var objectDataSeeding =  scope.ServiceProvider.GetRequiredService<IDataSeeding>();
-          await  objectDataSeeding.DataSeedAsync();
+            var objectDataSeeding = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
+            await objectDataSeeding.DataSeedAsync();
 
 
             #region Configure the HTTP request pipeline.
 
             // Configure the HTTP request pipeline.
+            //app.Use(async (RequestContext, NextMiddleWare) =>
+            //{
+            //    Console.WriteLine("Request Under Processing");
+            //    await NextMiddleWare.Invoke();
+            //    Console.WriteLine("Watting Response Processing");
+            //    Console.WriteLine(RequestContext.Response.Body);
+            //});
+            app.UseMiddleware<CustomExceptionHandlerMiddlerWare>();
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
