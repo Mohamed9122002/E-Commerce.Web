@@ -1,6 +1,7 @@
 
 using DomainLayer.Contracts;
 using E_Commerce.Web.CustomeMiddleware;
+using E_Commerce.Web.Extensions;
 using E_Commerce.Web.Facttories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -25,35 +26,18 @@ namespace E_Commerce.Web
             #region  Add services to the container.
 
             builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
 
-            builder.Services.AddDbContext<StoreDbContext>(Options =>
-            {
-                Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-            });
-            builder.Services.AddScoped<IDataSeeding, DataSeeding>();
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddSwaggerServices();
 
-            // Add AutoMapper
-            builder.Services.AddAutoMapper(typeof(ProductProfile).Assembly);
-            //builder.Services.AddAutoMapper(X => X.AddProfile(new ProductProfile()));
-            builder.Services.AddScoped<IServiceManager, ServiceManager>();
-            builder.Services.Configure<ApiBehaviorOptions>((Options) => {
-                Options.InvalidModelStateResponseFactory = ApiResponseFactory.GenerateApiValidationErrorsResponse;
+            builder.Services.AddInfrastructureServices(builder.Configuration);
 
-            });
+            builder.Services.AddApplicationServices();
+
+            builder.Services.AddWebApplicationServices();
 
             #endregion
             var app = builder.Build();
-            // get Container Services  
-            // Allowed Dependency Injection Manual  
-            var scope = app.Services.CreateScope();
-            // Get the Service Provider
-            var objectDataSeeding = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
-            await objectDataSeeding.DataSeedAsync();
-
+           await  app.SeedDatabaseAsync();
 
             #region Configure the HTTP request pipeline.
 
@@ -65,12 +49,14 @@ namespace E_Commerce.Web
             //    Console.WriteLine("Watting Response Processing");
             //    Console.WriteLine(RequestContext.Response.Body);
             //});
-            app.UseMiddleware<CustomExceptionHandlerMiddlerWare>();
+
+            app.UseCustomExceptionHandler();
+            
             if (app.Environment.IsDevelopment())
             {
-                app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerMiddleWares();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
             //app.UseAuthorization();
