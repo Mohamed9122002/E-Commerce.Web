@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DomainLayer.Models
+namespace DomainLayer.Models.ProductModel
 {
     public class Product :BaseEntity<int>
     {
