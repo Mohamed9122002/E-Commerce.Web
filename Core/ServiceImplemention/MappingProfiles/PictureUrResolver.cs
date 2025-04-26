@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using AutoMapper.Execution;
 using AutoMapper.Internal;
-using DomainLayer.Models;
+using DomainLayer.Models.ProductModel;
 using Microsoft.Extensions.Configuration;
 using Shared.DataTransferObject;
 using System;
