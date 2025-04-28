@@ -1,6 +1,7 @@
 ﻿
 
 using Microsoft.Extensions.Configuration;
+using Persistence.Identity;
 using StackExchange.Redis;
 
 namespace Persistence
@@ -12,6 +13,10 @@ namespace Persistence
             Services.AddDbContext<StoreDbContext>(Options =>
             {
                 Options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"));
+            });
+            Services.AddDbContext<StoreIdentityDbcontext>(Options =>
+            {
+                Options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection"));
             });
             Services.AddScoped<IDataSeeding, DataSeeding>();
             Services.AddScoped<IUnitOfWork, UnitOfWork>();
