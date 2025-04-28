@@ -14,7 +14,7 @@ namespace Presentation.Controllers
     {
         // Login 
         [HttpPost("Login")] //Post/BaseUrl/api/Authentication/Login
-        public async Task<ActionResult<UserDTo>> Login (LoginDTo loginDTo)
+        public async Task<ActionResult<UserDTo>> Login(LoginDTo loginDTo)
         {
             var User = await _serviceManager.AuthenticationcService.LoginAsync(loginDTo);
             return Ok(User);

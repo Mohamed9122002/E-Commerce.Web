@@ -73,7 +73,7 @@ namespace ServiceImplemention
 
         private string CreateTokenAsync(ApplicationUser applicationUser)
         {
-            throw new NotImplementedException();
+            return "ToDo";
         }
     }
 }
