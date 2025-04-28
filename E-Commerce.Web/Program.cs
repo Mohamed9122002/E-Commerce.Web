@@ -35,9 +35,10 @@ namespace E_Commerce.Web
 
             builder.Services.AddWebApplicationServices();
 
+
             #endregion
             var app = builder.Build();
-           await  app.SeedDatabaseAsync();
+            await app.SeedDatabaseAsync();
 
             #region Configure the HTTP request pipeline.
 
@@ -51,7 +52,7 @@ namespace E_Commerce.Web
             //});
 
             app.UseCustomExceptionHandler();
-            
+
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwaggerMiddleWares();
