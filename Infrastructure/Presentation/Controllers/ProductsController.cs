@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using ServiceAbstraction;
 using Shared;
 using Shared.DataTransferObject;
@@ -15,6 +16,7 @@ namespace Presentation.Controllers
     public  class ProductsController(IServiceManager  _serviceManager): ApiBaseController
     {
         // Get All Prdoucts 
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDtos>>> GetAllProducts([FromQuery]ProductQueryParams queryParams)
         {
