@@ -13,6 +13,8 @@ namespace E_Commerce.Web.Extensions
             // Get the Service Provider
             var objectDataSeeding = scope.ServiceProvider.GetRequiredService<IDataSeeding>();
             await objectDataSeeding.DataSeedAsync();
+            await objectDataSeeding.IdentityDataSeedAsync();
+            
         }
 
 
