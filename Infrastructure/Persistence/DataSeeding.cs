@@ -1,5 +1,6 @@
 ﻿using DomainLayer.Contracts;
 using DomainLayer.Models.IdentityModule;
+using DomainLayer.Models.OrderModule;
 using DomainLayer.Models.ProductModel;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -29,7 +30,7 @@ namespace Persistence
                 if (!_storeDbContext.ProductBrands.Any())
                 {
                     //var ProductBrandData =await File.ReadAllTextAsync(@"..\Infrastructure\Persistence\Data\DataSeed\brands.json");
-                    var ProductBrandData = File.OpenRead(@"..\Infrastructure\Persistence\Data\DataSeed\brands.json");
+                  using  var ProductBrandData = File.OpenRead(@"..\Infrastructure\Persistence\Data\DataSeed\brands.json");
 
                     // Convert Data "String" to C# Object 
                     var ProductBrands = await JsonSerializer.DeserializeAsync<List<ProductBrand>>(ProductBrandData);
@@ -41,7 +42,7 @@ namespace Persistence
                 }
                 if (!_storeDbContext.ProductTypes.Any())
                 {
-                    var ProductTypeData = File.OpenRead(@"..\Infrastructure\Persistence\Data\DataSeed\types.json");
+                   using var ProductTypeData = File.OpenRead(@"..\Infrastructure\Persistence\Data\DataSeed\types.json");
                     // Convert Data "String" to C# Object 
                     var ProductTypes = await JsonSerializer.DeserializeAsync<List<ProductType>>(ProductTypeData);
                     // Save Data to Database
@@ -52,13 +53,24 @@ namespace Persistence
                 }
                 if (!_storeDbContext.Products.Any())
                 {
-                    var ProductData = File.OpenRead(@"..\Infrastructure\Persistence\Data\DataSeed\products.json");
+                  using var ProductData = File.OpenRead(@"..\Infrastructure\Persistence\Data\DataSeed\products.json");
                     // Convert Data "String" to C# Object 
                     var Products = await JsonSerializer.DeserializeAsync<List<Product>>(ProductData);
                     // Save Data to Database
                     if (Products is not null && Products.Any())
                     {
                         await _storeDbContext.Products.AddRangeAsync(Products);
+                    }
+                }
+                if (!_storeDbContext.Set<DeliveryMethod>().Any())
+                {
+                    using var DeliveryMethodStream = File.OpenRead(@"..\Infrastructure\Persistence\Data\DataSeed\delivery.json");
+                    // Convert Data "String" to C# Object 
+                    var DeliveryMethods = await JsonSerializer.DeserializeAsync<List<DeliveryMethod>>(DeliveryMethodStream);
+                    // Save Data to Database
+                    if (DeliveryMethods is not null && DeliveryMethods.Any())
+                    {
+                        await _storeDbContext.Set<DeliveryMethod>().AddRangeAsync(DeliveryMethods);
                     }
                 }
                 await _storeDbContext.SaveChangesAsync();

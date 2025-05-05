@@ -14,7 +14,7 @@ namespace DomainLayer.Models.OrderModule
         public string UserEmail { get; set; } = default!;
         public  DateTimeOffset OrderDate { get; set; } = DateTimeOffset.Now;
 
-        public OrderAddress OrderAddress { get; set; } = default!;
+        public OrderAddress Address { get; set; } = default!;
         public DeliveryMethod DeliveryMethod { get; set; } = default!;
         public int DeliveryMethodId { get; set; } = default!; // Fk 
 
