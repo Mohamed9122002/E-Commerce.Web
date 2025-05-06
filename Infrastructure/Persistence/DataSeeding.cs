@@ -62,6 +62,7 @@ namespace Persistence
                         await _storeDbContext.Products.AddRangeAsync(Products);
                     }
                 }
+               
                 if (!_storeDbContext.Set<DeliveryMethod>().Any())
                 {
                     using var DeliveryMethodStream = File.OpenRead(@"..\Infrastructure\Persistence\Data\DataSeed\delivery.json");
