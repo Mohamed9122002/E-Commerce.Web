@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DomainLayer.Contracts;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -11,5 +12,6 @@ namespace ServiceAbstraction
         public IProductServices ProductServices { get; }
         public IBasketService BasketServices { get; }
         public IAuthenticationcService AuthenticationcService { get; }
+        public IOrderServices OrderService { get; }
     }
 }
