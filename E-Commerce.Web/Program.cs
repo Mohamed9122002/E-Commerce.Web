@@ -1,8 +1,12 @@
 
+using AutoMapper;
 using DomainLayer.Contracts;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 using Persistence;
 using Persistence.Data.DbContexts;
+using Persistence.Repositories;
+using ServiceImplementation.MappingProfiles;
 using System.Threading.Tasks;
 
 namespace E_Commerce.Web
@@ -22,6 +26,9 @@ namespace E_Commerce.Web
                 Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
             builder.Services.AddScoped<IDataSeeding, DataSeeding>();
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(); 
+            builder.Services.AddAutoMapper(typeof(ServiceImplementation.AssemblyReference).Assembly);
+
             #endregion
             var app = builder.Build();
 
@@ -48,5 +55,6 @@ namespace E_Commerce.Web
 
             app.Run();
         }
+
     }
 }
