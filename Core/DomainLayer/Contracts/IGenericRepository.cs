@@ -17,7 +17,8 @@ namespace DomainLayer.Contracts
 
         #region With Specification 
         Task<IEnumerable<TEntity>> GetAllAsync(ISpecification<TEntity, TKey> specifications);
-        Task<TEntity?> GetByIdAsync(ISpecification<TEntity, TKey> specifications); 
+        Task<TEntity?> GetByIdAsync(ISpecification<TEntity, TKey> specifications);
+        Task<int> CountAsync(ISpecification<TEntity, TKey> specification);
         #endregion
     }
 }
