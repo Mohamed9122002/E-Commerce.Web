@@ -6,6 +6,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Persistence;
 using Persistence.Data.DbContexts;
 using Persistence.Repositories;
+using ServiceAbstraction;
+using ServiceImplementation;
 using ServiceImplementation.MappingProfiles;
 using System.Threading.Tasks;
 
@@ -28,6 +30,7 @@ namespace E_Commerce.Web
             builder.Services.AddScoped<IDataSeeding, DataSeeding>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(); 
             builder.Services.AddAutoMapper(typeof(ServiceImplementation.AssemblyReference).Assembly);
+            builder.Services.AddScoped<IServiceManager, ServiceManager>();
 
             #endregion
             var app = builder.Build();
