@@ -30,14 +30,17 @@ namespace ServiceImplementation
         {
             var specifications = new ProductWithBrandAndTypeSpecifications(id);
             var product = await _unitOfWork.GetRepository<Product, int>().GetByIdAsync(specifications);
-            
+
             return _mapper.Map<Product, ProductDto>(product);
         }
-        public async Task<IEnumerable<ProductDto>> GetAllProductsAsync(ProductQueryParameters queryParameters)
+        public async Task<PaginatedResult<ProductDto>> GetAllProductsAsync(ProductQueryParameters queryParameters)
         {
             var specifications = new ProductWithBrandAndTypeSpecifications(queryParameters);
             var Products = await _unitOfWork.GetRepository<Product, int>().GetAllAsync(specifications);
-            return _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(Products);
+            var Count = Products.Count();
+            var Data = _mapper.Map<IEnumerable<Product>, IEnumerable<ProductDto>>(Products);
+
+            return new PaginatedResult<ProductDto>(queryParameters.PageIndex, Count, 0, Data);
         }
     }
 }
