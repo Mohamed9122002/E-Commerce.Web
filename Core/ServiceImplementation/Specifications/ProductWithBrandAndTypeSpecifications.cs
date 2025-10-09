@@ -11,13 +11,13 @@ namespace ServiceImplementation.Specifications
     public class ProductWithBrandAndTypeSpecifications :BaseSpecification<Product ,int>
     {
         // Get All Products With Brand With Type
-        public ProductWithBrandAndTypeSpecifications(int? BrandId , int? TypeId,ProductSortingOptions sortingOptions)
-            : base(p =>(!BrandId.HasValue || p.BrandId == BrandId)&&
-            (!TypeId.HasValue || p.TypeId == TypeId))
+        public ProductWithBrandAndTypeSpecifications(ProductQueryParameters queryParameters)
+            : base(p =>(!queryParameters.BrandId.HasValue || p.BrandId == queryParameters.BrandId) &&
+            (!queryParameters.TypeId.HasValue || p.TypeId == queryParameters.TypeId))
         {
             AddInclude(P => P.ProductBrand);
             AddInclude(p => p.ProductType);
-            switch (sortingOptions)
+            switch (queryParameters.SortingOptions)
             {
                 case ProductSortingOptions.NameAsc:
                     AddOrderBy(p => p.Name);
