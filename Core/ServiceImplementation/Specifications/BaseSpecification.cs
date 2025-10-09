@@ -11,11 +11,11 @@ namespace ServiceImplementation.Specifications
 {
     public abstract class BaseSpecification<TEntity, TKey> : ISpecification<TEntity, TKey> where TEntity : BaseEntity<TKey>
     {
-        protected BaseSpecification(Expression<Func<TEntity, bool>> WhereExpression)
+        protected BaseSpecification(Expression<Func<TEntity, bool>>? WhereExpression)
         {
             WhereExpressions = WhereExpression;
         }
-        public Expression<Func<TEntity, bool>> WhereExpressions { get; private set; }
+        public Expression<Func<TEntity, bool>>? WhereExpressions { get; private set; }
 
         public List<Expression<Func<TEntity, object>>> IncludeExpressions { get; } = [];
 

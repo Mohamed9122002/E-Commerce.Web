@@ -11,7 +11,7 @@ namespace DomainLayer.Contracts
     public interface ISpecification<TEntity, TKey> where TEntity : BaseEntity<TKey>
     {
         // Property Signature For Each Dynamic Part in Query  
-        public Expression<Func<TEntity,bool>> WhereExpressions { get; }
+        public Expression<Func<TEntity,bool>>? WhereExpressions { get; }
        public  List<Expression<Func<TEntity,object>>> IncludeExpressions { get; }
     }
 }
