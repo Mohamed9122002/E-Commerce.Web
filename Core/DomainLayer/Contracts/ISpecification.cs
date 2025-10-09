@@ -16,5 +16,9 @@ namespace DomainLayer.Contracts
         public Expression<Func<TEntity,object>> OrderByExpressions { get; }
         public Expression<Func<TEntity, object>> OrderBysDesExpressions { get; }
 
+        public int Take { get; }
+        public int Skip { get; }
+        public bool IsPagingEnabled { get; set; }
+
     }
 }

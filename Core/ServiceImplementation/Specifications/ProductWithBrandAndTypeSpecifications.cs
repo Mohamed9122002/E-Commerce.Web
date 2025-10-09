@@ -8,12 +8,13 @@ using System.Threading.Tasks;
 
 namespace ServiceImplementation.Specifications
 {
-    public class ProductWithBrandAndTypeSpecifications :BaseSpecification<Product ,int>
+    public class ProductWithBrandAndTypeSpecifications : BaseSpecification<Product, int>
     {
         // Get All Products With Brand With Type
         public ProductWithBrandAndTypeSpecifications(ProductQueryParameters queryParameters)
-            : base(p =>(!queryParameters.BrandId.HasValue || p.BrandId == queryParameters.BrandId) &&
-            (!queryParameters.TypeId.HasValue || p.TypeId == queryParameters.TypeId))
+            : base(p => (!queryParameters.BrandId.HasValue || p.BrandId == queryParameters.BrandId) &&
+            (!queryParameters.TypeId.HasValue || p.TypeId == queryParameters.TypeId)
+            && (string.IsNullOrWhiteSpace(queryParameters.SearchValue)||p.Name.ToLower().Contains(queryParameters.SearchValue.ToLower())))
         {
             AddInclude(P => P.ProductBrand);
             AddInclude(p => p.ProductType);
@@ -34,6 +35,8 @@ namespace ServiceImplementation.Specifications
                 default:
                     break;
             }
+            ApplyPagination(queryParameters.PageSize,queryParameters.PageIndex);
+
         }
         public ProductWithBrandAndTypeSpecifications(int id ):base(P=>P.Id == id)
         {

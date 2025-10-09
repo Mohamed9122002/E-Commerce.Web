@@ -30,6 +30,8 @@ namespace ServiceImplementation.Specifications
         public Expression<Func<TEntity, object>> OrderByExpressions { get; private set; }
 
         public Expression<Func<TEntity, object>> OrderBysDesExpressions { get; private set; }
+
+
         protected void AddOrderBy(Expression<Func<TEntity, object>> orderByExp )
         {
             OrderByExpressions = orderByExp;
@@ -39,6 +41,21 @@ namespace ServiceImplementation.Specifications
             OrderBysDesExpressions = orderByExpDesc;
         }
 
+        #endregion
+        #region Pagination
+
+
+        public int Take { get; private set; }
+
+        public int Skip { get; private set; }
+
+        public bool IsPagingEnabled { get; set; }
+       protected void ApplyPagination(int PageSize , int PageIndex)
+        {
+            IsPagingEnabled = true;
+            Take = PageSize; 
+            Skip = PageSize * (PageIndex - 1);
+        }
         #endregion
     }
 }
