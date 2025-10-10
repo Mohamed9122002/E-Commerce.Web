@@ -12,7 +12,7 @@ namespace Presentation.Controllers
 {
     [ApiController]
     [Route("api/[Controller]")]
-    public class ProductController(IServiceManager _serviceManager) : ControllerBase
+    public class ProductsController(IServiceManager _serviceManager) : ControllerBase
     {
         // Get All Product 
         [HttpGet] 

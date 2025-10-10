@@ -1,6 +1,7 @@
 
 using AutoMapper;
 using DomainLayer.Contracts;
+using E_Commerce.Web.CustomMiddleware;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Persistence;
@@ -41,7 +42,8 @@ namespace E_Commerce.Web
             await ObjectOfDataSeeding.DataSeedAsync();
 
             #endregion
-            #region Configure the HTTP request pipeline.
+            #region Configure the HTTP request pipeline
+            app.UseMiddleware<CustomExceptionHandlerMiddleware>();
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
