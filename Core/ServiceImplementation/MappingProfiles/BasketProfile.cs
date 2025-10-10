@@ -1,0 +1,22 @@
+﻿using AutoMapper;
+using DomainLayer.Models.BaskedModule;
+using Shared.DTOS.BasketDTOS;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ServiceImplementation.MappingProfiles
+{
+    public class BasketProfile :Profile
+    {
+        public BasketProfile()
+        {
+
+            CreateMap<CustomerBasket, BasketDto>().ReverseMap();
+            CreateMap<BasketItem, BasketItemDto>().ReverseMap();
+
+        }
+    }
+}
