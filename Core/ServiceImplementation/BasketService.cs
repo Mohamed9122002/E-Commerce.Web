@@ -16,17 +16,19 @@ namespace ServiceImplementation
 {
     public class BasketService(IBasketRepository _basketRepository, IMapper _mapper) : IBasketService
     {
+
         public async Task<BasketDto> CreateOrUpdateBasketAsync(BasketDto basket)
         {
             var CustomerBasket = _mapper.Map<BasketDto, CustomerBasket>(basket);
-            var CreateOrUpdatedBasket = await _basketRepository.CreateOrUpdatedBasketAsync(CustomerBasket);
-            if(CreateOrUpdatedBasket is not null)
+            var IsCreatedOrUpdated = _basketRepository.CreateOrUpdatedBasketAsync(CustomerBasket);
+            if (IsCreatedOrUpdated is not null)
             {
                 return await GetBasketAsync(basket.Id);
             }
             else
             {
-                throw new Exception("Can Not Updated Or Create Basket Now Try Again Later");
+                throw new Exception("Can't Updated Or Create Basket Now Try Again Later");
+
             }
         }
 
@@ -42,6 +44,7 @@ namespace ServiceImplementation
                 throw new BasketNotFoundException(Key);
             }
         }
+
         public async Task<bool> DeleteBasketAsync(string Key)
         {
             return await _basketRepository.DeleteBasketAsync(Key);

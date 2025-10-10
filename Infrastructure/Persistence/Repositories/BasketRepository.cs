@@ -29,14 +29,14 @@ namespace Persistence.Repositories
             return await _connectionDatabase.KeyDeleteAsync(key);
         }
 
+
         public async Task<CustomerBasket?> GetBasketAsync(string key)
         {
-            var Basket = await _connectionDatabase.StringGetAsync(key);
-            if (Basket.IsNullOrEmpty)
+            var basket = await _connectionDatabase.StringGetAsync(key);
+            if (basket.IsNullOrEmpty)
                 return null;
-            else
-                return JsonSerializer.Deserialize<CustomerBasket>(Basket!);
-
+            
+              return JsonSerializer.Deserialize<CustomerBasket>(basket!);
         }
     }
 }

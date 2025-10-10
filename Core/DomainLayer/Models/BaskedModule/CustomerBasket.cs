@@ -9,6 +9,6 @@ namespace DomainLayer.Models.BaskedModule
     public class CustomerBasket
     {
         public string Id { get; set; } // Guid
-        public ICollection<BasketItem> BasketItems { get; set; } = [];
+        public ICollection<BasketItem> Items { get; set; } = [];
      }
 }
