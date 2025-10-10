@@ -2,6 +2,7 @@
 using AutoMapper;
 using DomainLayer.Contracts;
 using E_Commerce.Web.CustomMiddleware;
+using E_Commerce.Web.Extensions;
 using E_Commerce.Web.Factories;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -25,32 +26,18 @@ namespace E_Commerce.Web
             var builder = WebApplication.CreateBuilder(args);
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
-            builder.Services.AddDbContext<StoreDbContext>(Options =>
-            {
-                Options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
-            });
-            builder.Services.AddScoped<IDataSeeding, DataSeeding>();
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>(); 
-            builder.Services.AddAutoMapper(typeof(ServiceImplementation.AssemblyReference).Assembly);
-            builder.Services.AddScoped<IServiceManager, ServiceManager>();
-            builder.Services.Configure<ApiBehaviorOptions>((Options) =>
-            {
-                Options.InvalidModelStateResponseFactory = APIResponseFactory.GenerateApiValidationErrorsResponse;
-
-            });
+            builder.Services.AddSwaggerServices();
+            builder.Services.AddInfrastructureServices(builder.Configuration);
+            builder.Services.AddApplicationServices();
+            builder.Services.AddWebApplicationServices();
             #endregion
             var app = builder.Build();
 
             #region DataSeeding
-            var scop = app.Services.CreateScope();
-            var ObjectOfDataSeeding = scop.ServiceProvider.GetRequiredService<IDataSeeding>();
-            await ObjectOfDataSeeding.DataSeedAsync();
-
+            app.SeedDataBaseAsync();
             #endregion
             #region Configure the HTTP request pipeline
-            app.UseMiddleware<CustomExceptionHandlerMiddleware>();
+            app.UseCustomExceptionMiddleWare(); 
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
