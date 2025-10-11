@@ -14,5 +14,12 @@ namespace ServiceAbstraction
 
         // Register 
         Task<UserDto> RegisterAsync(RegisterDto registerDto);
+        // Check Email 
+        Task<bool> CheckEmailAsync(string Email);
+        // Get Current User Address 
+        Task<AddressDto> GetCurrentUserAddressAsync(string Email);
+        // Updated Current User Address 
+        Task<AddressDto> UpdateCurrentUserAddressAsync(string Email, AddressDto addressDto);
+        Task<UserDto> GetCurrentUserAsync(string Email);
     }
 }
