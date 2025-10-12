@@ -14,7 +14,7 @@ namespace Persistence
 {
     public static class InfrastructureServicesRegistration
     {
-        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services,IConfiguration Configuration)
+        public static IServiceCollection AddInfrastructureServices(this IServiceCollection services, IConfiguration Configuration)
         {
             services.AddDbContext<StoreDbContext>(Options =>
             {
@@ -26,11 +26,12 @@ namespace Persistence
             });
             services.AddScoped<IDataSeeding, DataSeeding>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
-            services.AddSingleton<IConnectionMultiplexer>( (_) =>
+            services.AddSingleton<IConnectionMultiplexer>((_) =>
             {
-              return   ConnectionMultiplexer.Connect(Configuration.GetConnectionString("RedisConnectionString"));
+                return ConnectionMultiplexer.Connect(Configuration.GetConnectionString("RedisConnectionString"));
             });
             services.AddScoped<IBasketRepository, BasketRepository>();
+            services.AddScoped<ICacheRepository, CacheRepository>();
             services.AddIdentityCore<ApplicationUser>()
                 .AddRoles<IdentityRole>()
                 .AddEntityFrameworkStores<IdentityStoreDbContext>();

@@ -25,6 +25,7 @@ namespace ServiceImplementation
 
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<Func<IOrderService>>(Provider => () => Provider.GetRequiredService<IOrderService>());
+            services.AddScoped<ICacheService, CacheService>();
             return services;
         }
     }
