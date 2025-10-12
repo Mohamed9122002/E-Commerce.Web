@@ -14,6 +14,7 @@ using ServiceAbstraction;
 using ServiceImplementation;
 using ServiceImplementation.MappingProfiles;
 using Shared.ErrorModels;
+using Swashbuckle.AspNetCore.SwaggerUI;
 using System.Threading.Tasks;
 
 namespace E_Commerce.Web
@@ -42,7 +43,18 @@ namespace E_Commerce.Web
             if (app.Environment.IsDevelopment())
             {
                 app.UseSwagger();
-                app.UseSwaggerUI();
+                app.UseSwaggerUI(Options =>
+                {
+                    Options.ConfigObject = new ConfigObject()
+                    {
+                        DisplayRequestDuration = true
+
+                    };
+                    Options.DocumentTitle = "E_Commerce";
+                    Options.DocExpansion(DocExpansion.None);
+                    Options.EnableFilter();
+                    Options.EnablePersistAuthorization();
+                });
             }
 
             app.UseHttpsRedirection();
