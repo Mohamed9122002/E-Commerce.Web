@@ -17,6 +17,5 @@ namespace Shared.DTOS.OrderDTOS
         public string OrderStatus { get; set; } = default!;
         public ICollection<OrderItemDto> Items { get; set; } = []; 
         public decimal SubTotal { get; set; } 
-        public
     }
 }
